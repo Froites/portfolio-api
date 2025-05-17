@@ -1,0 +1,13 @@
+version: '3'
+services:
+  mongodb:
+    image: mongo
+    container_name: portfolio-mongodb
+    ports:
+      - "27027:27017"
+    volumes:
+      - portfolio_mongodb_data:/data/db
+    restart: unless-stopped
+
+volumes:
+  portfolio_mongodb_data:
