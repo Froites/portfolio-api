@@ -8,8 +8,8 @@ COPY . .
 # Instalar todas as dependências, incluindo as de desenvolvimento
 RUN npm ci
 
-# Executar o build do NestJS
-RUN npm run build
+# Compilar TypeScript diretamente sem usar o script de build
+RUN npx tsc -p tsconfig.build.json
 
 # Iniciar uma nova imagem para a aplicação final (multi-stage build)
 FROM node:18-alpine
