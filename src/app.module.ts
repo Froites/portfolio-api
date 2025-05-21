@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, MiddlewareConsumer, NestModule } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppController } from './app.controller';
@@ -10,6 +10,7 @@ import { ServicesModule } from './services/services.module';
 import { ExperienceModule } from './experience/experience.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigurationModule } from './config/configuration.module';
+import { LoggerMiddleware } from './middleware/logger.middleware';
 
 @Module({
   imports: [
@@ -18,6 +19,12 @@ import { ConfigurationModule } from './config/configuration.module';
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         uri: configService.get<string>('MONGODB_URI'),
+        // Adiciona configurações para melhor desempenho e segurança
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        serverSelectionTimeoutMS: 5000,
+        // Desativa a coleta de métricas para melhor desempenho
+        monitorCommands: process.env.NODE_ENV === 'development',
       }),
       inject: [ConfigService],
     }),
@@ -26,9 +33,14 @@ import { ConfigurationModule } from './config/configuration.module';
     ProjectsModule,
     ServicesModule,
     ExperienceModule,
-    AuthModule,
+    AuthModule, // Agora AuthModule é global e aplicará o ApiKeyGuard a todas as rotas
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  // Configuração do middleware de logging
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes('*');
+  }
+}

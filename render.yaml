@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: portfolio-api
+    env: node
+    buildCommand: npm install && npm run build
+    startCommand: npm run start:prod
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGODB_URI
+        sync: false
+      - key: API_KEY
+        generateValue: true
+      - key: LOG_LEVEL
+        value: warn
+    plan: free
+    autoDeploy: true
+    healthCheckPath: /
+    domains:
+      - portfolio-app-4gcn.vercel.app # Substitua pelo seu domínio se tiver

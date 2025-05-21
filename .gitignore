@@ -1,7 +1,6 @@
 # compiled output
 /dist
 /node_modules
-/build
 
 # Logs
 logs
@@ -27,30 +26,27 @@ lerna-debug.log*
 *.launch
 .settings/
 *.sublime-workspace
+/.vscode
 
-# IDE - VSCode
+# Environment files (importante para segurança!)
+.env
+.env.*
+!.env.example
+
+# Production files
+/build
+/release
+
+# Temporary files
+/tmp
+/temp
+
+# Local database files
+/data
+
+# IDE - VSCode specific files
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-
-# dotenv environment variable files
-.env
-.env.development.local
-.env.test.local
-.env.production.local
-.env.local
-
-# temp directory
-.temp
-.tmp
-
-# Runtime data
-pids
-*.pid
-*.seed
-*.pid.lock
-
-# Diagnostic reports (https://nodejs.org/api/report.html)
-report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
