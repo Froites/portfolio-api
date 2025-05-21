@@ -8,6 +8,40 @@ services:
     volumes:
       - portfolio_mongodb_data:/data/db
     restart: unless-stopped
+    environment:
+      - MONGO_INITDB_DATABASE=portfolio
+      # Caso precise de credenciais (opcional)
+      # - MONGO_INITDB_ROOT_USERNAME=admin
+      # - MONGO_INITDB_ROOT_PASSWORD=password
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo localhost:27017/test --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: portfolio-api
+    ports:
+      - "3000:3000"
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - MONGODB_URI=mongodb://mongodb:27017/portfolio
+      # Caso o MongoDB tenha credenciais
+      # - MONGODB_URI=mongodb://admin:password@mongodb:27017/portfolio
+      - API_KEY=${API_KEY}
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    command: npm run start:dev
+    restart: unless-stopped
 
 volumes:
   portfolio_mongodb_data:
