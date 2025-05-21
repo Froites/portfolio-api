@@ -1,52 +1,42 @@
-# compiled output
-/dist
-/node_modules
+# Node modules
+node_modules
+
+# Arquivos de build existentes (se houver)
+dist
 
 # Logs
 logs
 *.log
 npm-debug.log*
-pnpm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-lerna-debug.log*
 
-# OS
+# Arquivos do sistema operacional
 .DS_Store
 
-# Tests
-/coverage
-/.nyc_output
-
-# IDEs and editors
-/.idea
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-workspace
-/.vscode
-
-# Environment files (importante para segurança!)
+# Arquivos de ambiente
 .env
 .env.*
 !.env.example
 
-# Production files
-/build
-/release
+# Diretórios de cache
+.npm
+.cache
 
-# Temporary files
-/tmp
-/temp
+# Arquivos de VSCode
+.vscode
 
-# Local database files
-/data
+# Diretórios de testes
+coverage
+.nyc_output
 
-# IDE - VSCode specific files
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
+# Arquivos temporários
+tmp
+temp
+
+# Git e arquivos relacionados
+.git
+.gitignore
+
+# README e outros arquivos de documentação
+README.md
+CHANGELOG.md
+LICENSE
