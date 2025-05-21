@@ -31,20 +31,26 @@ async function bootstrap() {
   app.use(helmet());
   
   // Configura CORS baseado no ambiente
-  if (isProd) {
+  if (process.env.NODE_ENV === 'production') {
     app.enableCors({
-      origin: ['https://seu-dominio.com'], // Substitua pelo seu domínio em produção
-      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-      credentials: false, // Para maior segurança, não envie cookies em requisições cross-origin
+      origin: [
+        'https://portfolio-app-woad-xi.vercel.app', // Seu URL real na Vercel
+        'http://localhost:5173' // Para desenvolvimento local
+      ],
+      methods: 'GET,OPTIONS,HEAD,PUT,PATCH,POST,DELETE',
+      allowedHeaders: ['Content-Type', 'Authorization', 'x-api-key'],
+      credentials: false,
+      preflightContinue: false,
+      optionsSuccessStatus: 204
     });
-    logger.log('CORS configurado para produção');
+    console.log('CORS configurado para produção');
   } else {
     app.enableCors({
-      origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
-      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-      credentials: true, // Permite cookies em dev para facilitar testes
+      origin: '*', // Mais permissivo para desenvolvimento
+      methods: 'GET,OPTIONS,HEAD,PUT,PATCH,POST,DELETE',
+      allowedHeaders: ['Content-Type', 'Authorization', 'x-api-key'],
     });
-    logger.log('CORS configurado para desenvolvimento');
+    console.log('CORS configurado para desenvolvimento');
   }
   
   // Validação de dados de entrada mais rigorosa
